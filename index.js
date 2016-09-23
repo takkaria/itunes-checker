@@ -26,6 +26,15 @@ function debug(str) {
 		console.log(str);
 }
 
+const normalizeMd = (filename, data) => ({
+	filename:     filename,
+	title:        data['Title'],
+	album:        data['Album'],
+	artist:       data['Authors'] ? data['Authors'][0] : null,
+	size:         data['Size'],
+	milliseconds: Math.floor(data['DurationSeconds'] * 1000)
+})
+
 function getFileData(file, done) {
 	fs.access(file, fs.constants.R_OK, err => {
 		if (err) {
@@ -37,7 +46,7 @@ function getFileData(file, done) {
 					console.error('ERROR: ', err)
 					done()
 				} else {
-					done(null, data)
+					done(null, normalizeMd(file, data))
 				}
 			})
 		}
@@ -63,27 +72,27 @@ function processInputFiles(files, done) {
 function getMatch(input, track) {
 	let matchFactor = 0
 
-	if (input.Title === track.Name) {
+	if (input.title === track.Name) {
 		debug('match name')
 		matchFactor += 10
 	}
 
-	if (input.Album === track.Album) {
+	if (input.album === track.Album) {
 		debug('match album')
 		matchFactor += 5
 	}
 
-	if (input.Authors[0] === track.Artist) {
+	if (input.artist === track.Artist) {
 		debug('match artist')
 		matchFactor += 5
 	}
 
-	if (input.Size === track.Size) {
+	if (input.size === track.Size) {
 		debug('match size')
 		matchFactor += 20
 	}
 
-	if (Math.floor(input.DurationSeconds * 1000) === track['Total Time']) {
+	if (input.milliseconds === track['Total Time']) {
 		debug('match time')
 		matchFactor += 10
 	}
@@ -94,7 +103,7 @@ function getMatch(input, track) {
 function showMatch(factor, input, track) {
 	console.log('MATCH: factor ' + factor + '\n' +
 			'Input: ' +
-			input.AlternateNames[0] +
+			input.filename +
 			'\niTunes track: ' +
 			track.Location +
 			'\n')
@@ -116,7 +125,7 @@ function checkForDuplicates(err, files) {
 				if (matchFactor > 0) {
 					debug('total factor ' + matchFactor)
 					debug('Are ' +
-							input.AlternateNames[0] +
+							input.filename +
 							' and ' +
 							track.Location +
 							' the same track?')
