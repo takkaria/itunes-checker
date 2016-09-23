@@ -1,6 +1,6 @@
 {
   "name": "itunes-checker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Check iTunes library for duplicates",
   "main": "index.js",
   "scripts": {
