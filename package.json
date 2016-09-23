@@ -1,0 +1,18 @@
+{
+  "name": "itunes-checker",
+  "version": "1.0.0",
+  "description": "Check iTunes library for duplicates",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "takkaria@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.0.1",
+    "itunes-library-stream": "0.0.0",
+    "mdls": "^1.1.0",
+    "userhome": "^1.0.0",
+    "yargs": "^5.0.0"
+  }
+}
