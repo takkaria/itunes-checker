@@ -7,6 +7,7 @@ const userhome = require('userhome')
 const fs = require('fs')
 const itunes = require('itunes-library-stream')
 const async = require('async')
+const chalk = require('chalk')
 const mdls = require('./mdls')
 
 // Options
@@ -106,10 +107,10 @@ function getMatch(input, track) {
 }
 
 function showMatch(factor, input, track) {
-	console.log('MATCH: factor ' + factor + '\n' +
-			'Input: ' +
+	console.log(chalk.green('MATCH:') + ' factor ' + factor + '\n' +
+			chalk.yellow('Input: ') +
 			input.filename +
-			'\niTunes track: ' +
+			chalk.yellow('\niTunes track: ') +
 			track.Location +
 			'\n')
 
