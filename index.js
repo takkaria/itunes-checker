@@ -10,11 +10,16 @@ const async = require('async')
 const mdls = require('./mdls')
 
 // Options
-const argv = require('yargs').argv
+const argv = require('yargs')
+		.alias('d', 'debug')
+		.boolean('debug')
+		.argv
 
 const libraryPath = argv.libpath ||
 		path.resolve(userhome(), 'Music/iTunes/iTunes Music Library.xml')
 const inputFiles = argv._
+const debugMode = argv.debug ? true : false
+const lowestMatch = debugMode ? 1 : 15
 
 if (inputFiles.length === 0) {
 	console.error('ERROR: No files provided to check')
@@ -22,7 +27,7 @@ if (inputFiles.length === 0) {
 }
 
 function debug(str) {
-	if (argv.debug)
+	if (debugMode)
 		console.log(str);
 }
 
@@ -122,16 +127,7 @@ function checkForDuplicates(err, files) {
 				let input = files[i]
 				let matchFactor = getMatch(input, track)
 
-				if (matchFactor > 0) {
-					debug('total factor ' + matchFactor)
-					debug('Are ' +
-							input.filename +
-							' and ' +
-							track.Location +
-							' the same track?')
-				}
-
-				if (matchFactor >= 15) {
+				if (matchFactor >= lowestMatch) {
 					showMatch(matchFactor, input, track)
 				}
 			}
