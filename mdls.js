@@ -4,7 +4,7 @@ const path = require('path')
 const exec = require('child_process').exec
 
 module.exports = function mdls(file, ready) {
-  file = path.resolve(file).replace(/\ /g, '\\ ')
+  file = path.resolve(file).replace(/[\ \(\)\&]/g, match => '\\' + match)
 
   exec('mdls ' + file, function(err, raw_data) {
     if (err) {
