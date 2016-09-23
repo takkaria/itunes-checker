@@ -32,7 +32,14 @@ function getFileData(file, done) {
 			console.error('ERROR: file "' + file + '" not readable')
 			done()
 		} else {
-			mdls(file, done)
+			mdls(file, (err, data) => {
+				if (err) {
+					console.error('ERROR: ', err)
+					done()
+				} else {
+					done(null, data)
+				}
+			})
 		}
 	})
 }
