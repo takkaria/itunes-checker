@@ -50,6 +50,8 @@ function parseRaw(rawData) {
   return lines
 }
 
+const shouldForceString = key => key === 'MediaTypes' || key === 'Authors'
+
 function deserialize(rawData) {
   const lines = parseRaw(rawData)
   let data = {}
@@ -57,7 +59,7 @@ function deserialize(rawData) {
   for (let line of lines) {
     const kv = line.split('=')
     const key = kv[0].trim().replace('kMDItem', '')
-    const forceString = (key === 'MediaTypes') ? true : false
+    const forceString = shouldForceString(key)
 
     // Parsing this value correctly will require making a much better parser
     // One day...
